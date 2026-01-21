@@ -1,0 +1,152 @@
+
+<!-- ============================================ -->
+<!-- ARCHIVO 1: index.html (CARTA) -->
+<!-- ============================================ -->
+<!DOCTYPE html>
+<html lang="es">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Una sorpresa para ti...</title>
+    <style>
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+        }
+
+        body {
+            font-family: 'Georgia', serif;
+            min-height: 100vh;
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            background: linear-gradient(135deg, #ffecd2 0%, #fcb69f 100%);
+            overflow: hidden;
+        }
+
+        .container {
+            text-align: center;
+            padding: 20px;
+        }
+
+        .carta-container {
+            perspective: 1000px;
+        }
+
+        .sobre {
+            width: 300px;
+            height: 200px;
+            background: #fff;
+            margin: 0 auto;
+            position: relative;
+            border-radius: 5px;
+            box-shadow: 0 10px 30px rgba(0,0,0,0.3);
+            cursor: pointer;
+            transition: transform 0.3s;
+        }
+
+        .sobre:hover {
+            transform: scale(1.05);
+        }
+
+        .sobre-tapa {
+            position: absolute;
+            top: 0;
+            left: 0;
+            width: 0;
+            height: 0;
+            border-left: 150px solid transparent;
+            border-right: 150px solid transparent;
+            border-top: 100px solid #e74c3c;
+            transform-origin: top;
+            transition: transform 0.6s;
+            z-index: 2;
+        }
+
+        .sobre.abierto .sobre-tapa {
+            transform: rotateX(180deg);
+        }
+
+        .carta {
+            position: absolute;
+            width: 260px;
+            height: 160px;
+            background: #fff9e6;
+            top: 20px;
+            left: 20px;
+            padding: 20px;
+            border-radius: 3px;
+            box-shadow: 0 2px 10px rgba(0,0,0,0.1);
+            transition: transform 0.6s;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            font-size: 18px;
+            color: #333;
+            z-index: 1;
+        }
+
+        .sobre.abierto .carta {
+            transform: translateY(-50px);
+        }
+
+        .btn-continuar {
+            margin-top: 30px;
+            padding: 15px 40px;
+            font-size: 18px;
+            background: #e74c3c;
+            color: white;
+            border: none;
+            border-radius: 50px;
+            cursor: pointer;
+            box-shadow: 0 5px 15px rgba(231, 76, 60, 0.4);
+            transition: all 0.3s;
+            display: none;
+        }
+
+        .btn-continuar:hover {
+            background: #c0392b;
+            transform: translateY(-2px);
+            box-shadow: 0 7px 20px rgba(231, 76, 60, 0.6);
+        }
+
+        .mensaje-inicial {
+            font-size: 24px;
+            color: #e74c3c;
+            margin-bottom: 30px;
+            text-shadow: 2px 2px 4px rgba(0,0,0,0.1);
+        }
+    </style>
+</head>
+<body>
+    <div class="container">
+        <div class="carta-container">
+            <p class="mensaje-inicial">Tengo algo especial para ti... 💌</p>
+            <div class="sobre" id="sobre">
+                <div class="sobre-tapa"></div>
+                <div class="carta">
+                    Haz clic para abrir...
+                </div>
+            </div>
+            <button class="btn-continuar" id="btnContinuar">Continuar ❤️</button>
+        </div>
+    </div>
+
+    <script>
+        const sobre = document.getElementById('sobre');
+        const btnContinuar = document.getElementById('btnContinuar');
+
+        sobre.addEventListener('click', function() {
+            sobre.classList.add('abierto');
+            setTimeout(() => {
+                btnContinuar.style.display = 'block';
+            }, 600);
+        });
+
+        btnContinuar.addEventListener('click', function() {
+            window.location.href = 'pregunta.html';
+        });
+    </script>
+</body>
+</html>

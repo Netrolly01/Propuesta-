@@ -1,0 +1,101 @@
+<!-- ============================================ -->
+<!-- ARCHIVO 3: si.html (RESPUESTA POSITIVA) -->
+<!-- ============================================ -->
+<!DOCTYPE html>
+<html lang="es">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>¡SÍ! 💕</title>
+    <style>
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+        }
+
+        body {
+            font-family: 'Georgia', serif;
+            min-height: 100vh;
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            background: linear-gradient(135deg, #ff9a9e 0%, #fecfef 50%, #ffecd2 100%);
+            overflow: hidden;
+        }
+
+        .container {
+            text-align: center;
+            padding: 20px;
+            z-index: 10;
+            position: relative;
+        }
+
+        h1 {
+            font-size: 56px;
+            color: #e74c3c;
+            margin-bottom: 30px;
+            animation: pulso 1s infinite;
+        }
+
+        @keyframes pulso {
+            0%, 100% { transform: scale(1); }
+            50% { transform: scale(1.1); }
+        }
+
+        p {
+            font-size: 28px;
+            color: #e74c3c;
+            margin-top: 20px;
+        }
+
+        .emojis {
+            font-size: 80px;
+            margin-top: 30px;
+        }
+
+        .corazon {
+            position: fixed;
+            font-size: 30px;
+            animation: caer 4s linear;
+            pointer-events: none;
+        }
+
+        @keyframes caer {
+            0% {
+                top: -10%;
+                opacity: 1;
+            }
+            100% {
+                top: 110%;
+                opacity: 0;
+            }
+        }
+    </style>
+</head>
+<body>
+    <div class="container">
+        <h1>¡YESSS! 🎉❤️💕</h1>
+        <p>¡Me haces el hombre más feliz del mundo!</p>
+        <div class="emojis">😍💖✨</div>
+    </div>
+
+    <script>
+        function crearCorazon() {
+            const corazon = document.createElement('div');
+            corazon.classList.add('corazon');
+            const emojis = ['❤️', '💕', '💖', '💗', '💓', '💝'];
+            corazon.innerHTML = emojis[Math.floor(Math.random() * emojis.length)];
+            corazon.style.left = Math.random() * 100 + '%';
+            corazon.style.animationDuration = (Math.random() * 2 + 3) + 's';
+            document.body.appendChild(corazon);
+
+            setTimeout(() => {
+                corazon.remove();
+            }, 5000);
+        }
+
+        setInterval(crearCorazon, 200);
+    </script>
+</body>
+</html>
