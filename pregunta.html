@@ -1,13 +1,10 @@
-
-<!-- ============================================ -->
-<!-- ARCHIVO 2: pregunta.html (LA PREGUNTA) -->
-<!-- ============================================ -->
 <!DOCTYPE html>
 <html lang="es">
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>Una pregunta importante...</title>
+
     <style>
         * {
             margin: 0;
@@ -33,7 +30,7 @@
         h1 {
             font-size: 48px;
             color: #e74c3c;
-            margin-bottom: 40px;
+            margin-bottom: 20px;
             text-shadow: 2px 2px 4px rgba(0,0,0,0.1);
             animation: aparecer 1s ease-out;
         }
@@ -89,29 +86,59 @@
         }
     </style>
 </head>
+
 <body>
     <div class="container">
         <h1>¿Quieres ser mi novia? 💕</h1>
         <h1>Ingi 🫣</h1>
+
         <div class="botones">
             <button class="btn btn-si" id="btnSi">Sí ❤️</button>
             <button class="btn btn-no" id="btnNo">No 😔</button>
         </div>
     </div>
 
-    <script>
-        const btnSi = document.getElementById('btnSi');
-        const btnNo = document.getElementById('btnNo');
+    <!-- 🔥 FIREBASE + GUARDAR RESPUESTA -->
+    <script type="module">
+        import { initializeApp } from "https://www.gstatic.com/firebasejs/10.7.1/firebase-app.js";
+        import { getFirestore, addDoc, collection, serverTimestamp } from "https://www.gstatic.com/firebasejs/10.7.1/firebase-firestore.js";
 
-        btnSi.addEventListener('click', function() {
-            window.location.href = 'si.html';
+        const firebaseConfig = {
+            apiKey: "AIzaSyBpcUzgjVSv31mR-w-vkpHjYfslu_5L22Y",
+            authDomain: "propuesta-95aa2.firebaseapp.com",
+            projectId: "propuesta-95aa2",
+            storageBucket: "propuesta-95aa2.firebasestorage.app",
+            messagingSenderId: "701338842583",
+            appId: "1:701338842583:web:19afd9dc1d26fcf0320792"
+        };
+
+        const app = initializeApp(firebaseConfig);
+        const db = getFirestore(app);
+
+        const btnSi = document.getElementById("btnSi");
+        const btnNo = document.getElementById("btnNo");
+
+        async function guardarRespuesta(respuesta) {
+            try {
+                await addDoc(collection(db, "respuestas"), {
+                    respuesta: respuesta,
+                    fecha: serverTimestamp()
+                });
+            } catch (error) {
+                console.error("Error al guardar la respuesta", error);
+            }
+        }
+
+        btnSi.addEventListener("click", async () => {
+            await guardarRespuesta("Sí");
+            window.location.href = "si.html";
         });
 
-        btnNo.addEventListener('click', function() {
-            window.location.href = 'no.html';
+        btnNo.addEventListener("click", async () => {
+            await guardarRespuesta("No");
+            window.location.href = "no.html";
         });
     </script>
+
 </body>
 </html>
-
-
