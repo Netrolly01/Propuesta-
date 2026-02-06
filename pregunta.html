@@ -2,6 +2,7 @@
 <html lang="es">
 <head>
     <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>Una pregunta importante...</title>
 
     <style>
@@ -28,13 +29,14 @@
         h1 {
             font-size: 48px;
             color: #e74c3c;
-            margin-bottom: 30px;
+            margin-bottom: 25px;
         }
 
         .botones {
             display: flex;
             gap: 30px;
             justify-content: center;
+            margin-top: 30px;
         }
 
         .btn {
@@ -44,6 +46,11 @@
             border-radius: 50px;
             cursor: pointer;
             font-weight: bold;
+            transition: transform 0.2s;
+        }
+
+        .btn:hover {
+            transform: scale(1.05);
         }
 
         .btn-si {
@@ -56,10 +63,11 @@
             color: white;
         }
 
-        #estado {
-            margin-top: 25px;
-            font-size: 20px;
-            color: #2c3e50;
+        .mensaje {
+            margin-top: 20px;
+            font-size: 18px;
+            color: #555;
+            display: none;
         }
     </style>
 </head>
@@ -74,52 +82,31 @@
             <button class="btn btn-no" id="btnNo">No 😔</button>
         </div>
 
-        <p id="estado"></p>
+        <div class="mensaje" id="mensaje">
+            Procesando respuesta... 💌
+        </div>
     </div>
 
-    <script type="module">
-        import { initializeApp } from "https://www.gstatic.com/firebasejs/12.9.0/firebase-app.js";
-        import { getFirestore, collection, addDoc, serverTimestamp } from "https://www.gstatic.com/firebasejs/12.9.0/firebase-firestore.js";
+    <!-- ✅ SOLO JAVASCRIPT SIMPLE -->
+    <script>
+        const btnSi = document.getElementById("btnSi");
+        const btnNo = document.getElementById("btnNo");
+        const mensaje = document.getElementById("mensaje");
 
-        const firebaseConfig = {
-            apiKey: "AIzaSyCFDSbgdBjsg39ENGxmNbvsAFb_l1Ud4k",
-            authDomain: "propuesta-noviazo.firebaseapp.com",
-            projectId: "propuesta-noviazo",
-            storageBucket: "propuesta-noviazo.firebasestorage.app",
-            messagingSenderId: "311038871515",
-            appId: "1:311038871515:web:987e0ea4308c9c4bb989fe"
-        };
+        btnSi.addEventListener("click", () => {
+            mensaje.style.display = "block";
+            setTimeout(() => {
+                window.location.href = "si.html";
+            }, 800);
+        });
 
-        const app = initializeApp(firebaseConfig);
-        const db = getFirestore(app);
-
-        console.log("🔥 Firebase y Firestore listos");
-
-        async function guardarRespuesta(respuesta) {
-            document.getElementById("estado").innerText = "Guardando respuesta… 💌";
-
-            try {
-                await addDoc(collection(db, "respuestas"), {
-                    respuesta,
-                    fecha: serverTimestamp()
-                });
-
-                document.getElementById("estado").innerText =
-                    "Respuesta guardada 💖";
-
-                setTimeout(() => {
-                    window.location.href =
-                        respuesta === "SI" ? "si.html" : "no.html";
-                }, 800);
-
-            } catch (error) {
-                console.error(error);
-                alert("❌ No se pudo guardar");
-            }
-        }
-
-        btnSi.onclick = () => guardarRespuesta("SI");
-        btnNo.onclick = () => guardarRespuesta("NO");
+        btnNo.addEventListener("click", () => {
+            mensaje.style.display = "block";
+            setTimeout(() => {
+                window.location.href = "no.html";
+            }, 800);
+        });
     </script>
+
 </body>
 </html>

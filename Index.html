@@ -1,13 +1,10 @@
-<!-- ============================================ -->
-<!-- ARCHIVO 1: index.html (CARTA) -->
-<!-- ============================================ -->
 <!DOCTYPE html>
 <html lang="es">
-
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>Una sorpresa para ti...</title>
+
     <style>
         * {
             margin: 0;
@@ -22,7 +19,6 @@
             justify-content: center;
             align-items: center;
             background: linear-gradient(135deg, #ffecd2 0%, #fcb69f 100%);
-            overflow: hidden;
         }
 
         .container {
@@ -30,20 +26,29 @@
             padding: 20px;
         }
 
-        .carta-container {
-            perspective: 1000px;
+        .mensaje-inicial {
+            font-size: 26px;
+            color: #e74c3c;
+            margin-bottom: 40px;
         }
 
+        .carta-container {
+            display: flex;
+            flex-direction: column;
+            align-items: center;
+        }
+
+        /* SOBRE */
         .sobre {
-            width: 300px;
-            height: 200px;
+            width: 320px;
+            height: 220px;
             background: #fff;
-            margin: 0 auto;
             position: relative;
-            border-radius: 5px;
-            box-shadow: 0 10px 30px rgba(0, 0, 0, 0.3);
+            border-radius: 8px;
+            box-shadow: 0 15px 35px rgba(0,0,0,0.25);
             cursor: pointer;
             transition: transform 0.3s;
+            margin-bottom: 40px;
         }
 
         .sobre:hover {
@@ -56,155 +61,98 @@
             left: 0;
             width: 0;
             height: 0;
-            border-left: 150px solid transparent;
-            border-right: 150px solid transparent;
-            border-top: 100px solid #e74c3c;
+            border-left: 160px solid transparent;
+            border-right: 160px solid transparent;
+            border-top: 110px solid #e74c3c;
             transform-origin: top;
-            transition: transform 0.6s;
-            z-index: 2;
+            transition: transform 0.7s ease;
+            z-index: 3;
         }
 
         .sobre.abierto .sobre-tapa {
             transform: rotateX(180deg);
         }
 
+        /* CARTA */
         .carta {
             position: absolute;
-            width: 260px;
-            height: 160px;
-            background: #fff9e6;
+            width: 280px;
+            height: 180px;
+            background: linear-gradient(135deg, #fff9e6, #ffe4e1);
             top: 20px;
             left: 20px;
             padding: 20px;
-            border-radius: 3px;
-            box-shadow: 0 2px 10px rgba(0, 0, 0, 0.1);
-            transition: transform 0.6s;
+            border-radius: 10px;
+            box-shadow: 0 5px 20px rgba(0,0,0,0.15);
             display: flex;
             align-items: center;
             justify-content: center;
-            font-size: 18px;
-            color: #333;
-            z-index: 1;
+            text-align: center;
+            font-size: 20px;
+            color: #c0392b;
+            transition: transform 0.7s ease;
+            z-index: 2;
         }
 
         .sobre.abierto .carta {
-            transform: translateY(-50px);
+            transform: translateY(-90px);
         }
 
+        /* BOTÓN */
         .btn-continuar {
-            margin-top: 30px;
-            padding: 15px 40px;
-            font-size: 18px;
-            background: #e74c3c;
+            padding: 15px 45px;
+            font-size: 20px;
+            background: linear-gradient(135deg, #ff6b6b, #e74c3c);
             color: white;
             border: none;
             border-radius: 50px;
             cursor: pointer;
-            box-shadow: 0 5px 15px rgba(231, 76, 60, 0.4);
+            box-shadow: 0 8px 20px rgba(231,76,60,0.4);
             transition: all 0.3s;
             display: none;
         }
 
         .btn-continuar:hover {
-            background: #c0392b;
-            transform: translateY(-2px);
-            box-shadow: 0 7px 20px rgba(231, 76, 60, 0.6);
-        }
-
-        .mensaje-inicial {
-            font-size: 24px;
-            color: #e74c3c;
-            margin-bottom: 30px;
-            text-shadow: 2px 2px 4px rgba(0, 0, 0, 0.1);
+            transform: translateY(-3px);
+            box-shadow: 0 12px 25px rgba(231,76,60,0.6);
         }
     </style>
 </head>
 
 <body>
     <div class="container">
+        <p class="mensaje-inicial">Tengo algo especial para ti... 💌</p>
+
         <div class="carta-container">
-            <p class="mensaje-inicial">Tengo algo especial para ti... 💌</p>
             <div class="sobre" id="sobre">
                 <div class="sobre-tapa"></div>
                 <div class="carta">
+                    <br>
                     Haz clic para abrir...
                 </div>
             </div>
-            <button class="btn-continuar" id="btnContinuar">Continuar ❤️</button>
+
+            <button class="btn-continuar" id="btnContinuar">
+                Continuar ❤️
+            </button>
         </div>
     </div>
 
-    <script type="module">
-        import { initializeApp } from "https://www.gstatic.com/firebasejs/12.9.0/firebase-app.js";
-        import { getFirestore, collection, addDoc, serverTimestamp } from "https://www.gstatic.com/firebasejs/12.9.0/firebase-firestore.js";
-
-        // ==========================
-        // FIREBASE
-        // ==========================
-
-        const firebaseConfig = {
-            apiKey: "AIzaSyCFDSbgdBjsg39ENGxmNbvsAFb_l1Ud4k",
-            authDomain: "propuesta-noviazo.firebaseapp.com",
-            projectId: "propuesta-noviazo",
-            storageBucket: "propuesta-noviazo.firebasestorage.app",
-            messagingSenderId: "311038871515",
-            appId: "1:311038871515:web:987e0ea4308c9c4bb989fe",
-            measurementId: "G-9PNQ2LGNPK"
-        };
-
-        const app = initializeApp(firebaseConfig);
-        const db = getFirestore(app);
-
-        // ==========================
-        // ELEMENTOS
-        // ==========================
-
+    <script>
         const sobre = document.getElementById("sobre");
         const btnContinuar = document.getElementById("btnContinuar");
 
-        // ==========================
-        // FUNCIONES FIRESTORE
-        // ==========================
-
-        const guardarEvento = async (evento) => {
-            try {
-                await addDoc(collection(db, "respuestas"), {
-                    evento,
-                    pagina: "index.html",
-                    fecha: serverTimestamp(),
-                    navegador: navigator.userAgent,
-                    pantalla: `${window.innerWidth}x${window.innerHeight}`
-                });
-            } catch (err) {
-                console.error("❌ Error guardando evento:", err);
-            }
-        };
-
-        // ==========================
-        // EVENTOS
-        // ==========================
-
-        // abrir carta
         sobre.addEventListener("click", () => {
             sobre.classList.add("abierto");
 
-            guardarEvento("ABRIO_CARTA");
-
             setTimeout(() => {
                 btnContinuar.style.display = "block";
-            }, 600);
+            }, 700);
         });
 
-        // continuar
         btnContinuar.addEventListener("click", () => {
-            guardarEvento("CONTINUAR");
-            setTimeout(() => {
-                window.location.href = "pregunta.html";
-            }, 300);
+            window.location.href = "pregunta.html";
         });
-
     </script>
-
 </body>
-
 </html>
