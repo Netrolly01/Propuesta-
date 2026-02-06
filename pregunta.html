@@ -88,33 +88,16 @@
         </div>
     </div>
 
-    <!-- 🎵 Reproductor oculto de YouTube -->
-    <iframe
-        id="musica"
-        width="0"
-        height="0"
-        src=""
-        frameborder="0"
-        allow="autoplay"
-        allowfullscreen>
-    </iframe>
-
-    <!-- ✅ JavaScript -->
     <script>
         const btnSi = document.getElementById("btnSi");
         const btnNo = document.getElementById("btnNo");
         const mensaje = document.getElementById("mensaje");
-        const musica = document.getElementById("musica");
 
         btnSi.addEventListener("click", () => {
             mensaje.style.display = "block";
-
-            // 🎶 Reproduce la canción al presionar "Sí"
-            musica.src = "https://www.youtube.com/embed/-JE_lXvnN-8?autoplay=1";
-
             setTimeout(() => {
                 window.location.href = "si.html";
-            }, 2000);
+            }, 800);
         });
 
         btnNo.addEventListener("click", () => {
