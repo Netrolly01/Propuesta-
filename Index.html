@@ -1,9 +1,9 @@
-
 <!-- ============================================ -->
 <!-- ARCHIVO 1: index.html (CARTA) -->
 <!-- ============================================ -->
 <!DOCTYPE html>
 <html lang="es">
+
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
@@ -41,7 +41,7 @@
             margin: 0 auto;
             position: relative;
             border-radius: 5px;
-            box-shadow: 0 10px 30px rgba(0,0,0,0.3);
+            box-shadow: 0 10px 30px rgba(0, 0, 0, 0.3);
             cursor: pointer;
             transition: transform 0.3s;
         }
@@ -77,7 +77,7 @@
             left: 20px;
             padding: 20px;
             border-radius: 3px;
-            box-shadow: 0 2px 10px rgba(0,0,0,0.1);
+            box-shadow: 0 2px 10px rgba(0, 0, 0, 0.1);
             transition: transform 0.6s;
             display: flex;
             align-items: center;
@@ -115,10 +115,11 @@
             font-size: 24px;
             color: #e74c3c;
             margin-bottom: 30px;
-            text-shadow: 2px 2px 4px rgba(0,0,0,0.1);
+            text-shadow: 2px 2px 4px rgba(0, 0, 0, 0.1);
         }
     </style>
 </head>
+
 <body>
     <div class="container">
         <div class="carta-container">
@@ -133,20 +134,77 @@
         </div>
     </div>
 
-    <script>
-        const sobre = document.getElementById('sobre');
-        const btnContinuar = document.getElementById('btnContinuar');
+    <script type="module">
+        import { initializeApp } from "https://www.gstatic.com/firebasejs/12.9.0/firebase-app.js";
+        import { getFirestore, collection, addDoc, serverTimestamp } from "https://www.gstatic.com/firebasejs/12.9.0/firebase-firestore.js";
 
-        sobre.addEventListener('click', function() {
-            sobre.classList.add('abierto');
+        // ==========================
+        // FIREBASE
+        // ==========================
+
+        const firebaseConfig = {
+            apiKey: "AIzaSyCFDSbgdBjsg39ENGxmNbvsAFb_l1Ud4k",
+            authDomain: "propuesta-noviazo.firebaseapp.com",
+            projectId: "propuesta-noviazo",
+            storageBucket: "propuesta-noviazo.firebasestorage.app",
+            messagingSenderId: "311038871515",
+            appId: "1:311038871515:web:987e0ea4308c9c4bb989fe",
+            measurementId: "G-9PNQ2LGNPK"
+        };
+
+        const app = initializeApp(firebaseConfig);
+        const db = getFirestore(app);
+
+        // ==========================
+        // ELEMENTOS
+        // ==========================
+
+        const sobre = document.getElementById("sobre");
+        const btnContinuar = document.getElementById("btnContinuar");
+
+        // ==========================
+        // FUNCIONES FIRESTORE
+        // ==========================
+
+        const guardarEvento = async (evento) => {
+            try {
+                await addDoc(collection(db, "respuestas"), {
+                    evento,
+                    pagina: "index.html",
+                    fecha: serverTimestamp(),
+                    navegador: navigator.userAgent,
+                    pantalla: `${window.innerWidth}x${window.innerHeight}`
+                });
+            } catch (err) {
+                console.error("❌ Error guardando evento:", err);
+            }
+        };
+
+        // ==========================
+        // EVENTOS
+        // ==========================
+
+        // abrir carta
+        sobre.addEventListener("click", () => {
+            sobre.classList.add("abierto");
+
+            guardarEvento("ABRIO_CARTA");
+
             setTimeout(() => {
-                btnContinuar.style.display = 'block';
+                btnContinuar.style.display = "block";
             }, 600);
         });
 
-        btnContinuar.addEventListener('click', function() {
-            window.location.href = 'pregunta.html';
+        // continuar
+        btnContinuar.addEventListener("click", () => {
+            guardarEvento("CONTINUAR");
+            setTimeout(() => {
+                window.location.href = "pregunta.html";
+            }, 300);
         });
+
     </script>
+
 </body>
+
 </html>

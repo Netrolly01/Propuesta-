@@ -1,9 +1,9 @@
-
 <!-- ============================================ -->
 <!-- ARCHIVO 4: no.html (CONFIRMACIÓN) -->
 <!-- ============================================ -->
 <!DOCTYPE html>
 <html lang="es">
+
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
@@ -37,8 +37,15 @@
         }
 
         @keyframes llorar {
-            0%, 100% { transform: translateY(0); }
-            50% { transform: translateY(-10px); }
+
+            0%,
+            100% {
+                transform: translateY(0);
+            }
+
+            50% {
+                transform: translateY(-10px);
+            }
         }
 
         h1 {
@@ -81,6 +88,7 @@
         }
     </style>
 </head>
+
 <body>
     <div class="container">
         <div class="emoji-triste">😭</div>
@@ -91,33 +99,99 @@
         </div>
     </div>
 
-    <script>
-        const btnSi = document.getElementById('btnSi');
-        const btnNo = document.getElementById('btnNo');
+    <script type="module">
+        import { initializeApp } from "https://www.gstatic.com/firebasejs/12.9.0/firebase-app.js";
+        import { getFirestore, collection, addDoc, serverTimestamp } from "https://www.gstatic.com/firebasejs/12.9.0/firebase-firestore.js";
 
-        // El botón SÍ se escapa cuando intentas tocarlo
-        btnSi.addEventListener('mouseenter', function() {
+        // ==========================
+        // FIREBASE
+        // ==========================
+
+        const firebaseConfig = {
+            apiKey: "AIzaSyCFDSbgdBjsg39ENGxmNbvsAFb_l1Ud4k",
+            authDomain: "propuesta-noviazo.firebaseapp.com",
+            projectId: "propuesta-noviazo",
+            storageBucket: "propuesta-noviazo.firebasestorage.app",
+            messagingSenderId: "311038871515",
+            appId: "1:311038871515:web:987e0ea4308c9c4bb989fe",
+            measurementId: "G-9PNQ2LGNPK"
+        };
+
+        const app = initializeApp(firebaseConfig);
+        const db = getFirestore(app);
+
+        // ==========================
+        // BOTONES
+        // ==========================
+
+        const btnSi = document.getElementById("btnSi");
+        const btnNo = document.getElementById("btnNo");
+
+        // ==========================
+        // FUNCIONES
+        // ==========================
+
+        // mover botón
+        const moverBoton = () => {
             const x = Math.random() * (window.innerWidth - 200);
             const y = Math.random() * (window.innerHeight - 100);
-            btnSi.style.position = 'fixed';
-            btnSi.style.left = x + 'px';
-            btnSi.style.top = y + 'px';
+
+            btnSi.style.position = "fixed";
+            btnSi.style.left = x + "px";
+            btnSi.style.top = y + "px";
+        };
+
+        // guardar SI
+        const saveYes = async () => {
+            try {
+                await addDoc(collection(db, "respuestas"), {
+                    respuesta: "SI",
+                    pagina: "no.html",
+                    fecha: serverTimestamp(),
+                    navegador: navigator.userAgent,
+                    pantalla: `${window.innerWidth}x${window.innerHeight}`
+                });
+            } catch (err) {
+                console.error("Error guardando SI:", err);
+            }
+        };
+
+        // guardar NO
+        const saveNo = async () => {
+            try {
+                await addDoc(collection(db, "respuestas"), {
+                    respuesta: "NO",
+                    pagina: "no.html",
+                    fecha: serverTimestamp(),
+                    navegador: navigator.userAgent,
+                    pantalla: `${window.innerWidth}x${window.innerHeight}`
+                });
+
+                window.location.href = "si.html";
+            } catch (err) {
+                console.error("Error guardando NO:", err);
+            }
+        };
+
+        // ==========================
+        // EVENTOS
+        // ==========================
+
+        btnSi.addEventListener("mouseenter", () => {
+            moverBoton();
+            saveYes();
         });
 
-        // Para móviles
-        btnSi.addEventListener('touchstart', function(e) {
+        btnSi.addEventListener("touchstart", e => {
             e.preventDefault();
-            const x = Math.random() * (window.innerWidth - 200);
-            const y = Math.random() * (window.innerHeight - 100);
-            btnSi.style.position = 'fixed';
-            btnSi.style.left = x + 'px';
-            btnSi.style.top = y + 'px';
+            moverBoton();
+            saveYes();
         });
 
-        // El botón NO la lleva a la pantalla de SÍ
-        btnNo.addEventListener('click', function() {
-            window.location.href = 'si.html';
-        });
+        btnNo.addEventListener("click", saveNo);
+
     </script>
+
 </body>
+
 </html>

@@ -3,6 +3,7 @@
 <!-- ============================================ -->
 <!DOCTYPE html>
 <html lang="es">
+
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
@@ -39,8 +40,15 @@
         }
 
         @keyframes pulso {
-            0%, 100% { transform: scale(1); }
-            50% { transform: scale(1.1); }
+
+            0%,
+            100% {
+                transform: scale(1);
+            }
+
+            50% {
+                transform: scale(1.1);
+            }
         }
 
         p {
@@ -66,6 +74,7 @@
                 top: -10%;
                 opacity: 1;
             }
+
             100% {
                 top: 110%;
                 opacity: 0;
@@ -73,6 +82,7 @@
         }
     </style>
 </head>
+
 <body>
     <div class="container">
         <h1>¡VAMOOOSSS! 🎉❤️💕</h1>
@@ -82,22 +92,66 @@
         <div class="emojis">😍💖✨</div>
     </div>
 
-    <script>
+    <script type="module">
+        import { initializeApp } from "https://www.gstatic.com/firebasejs/12.9.0/firebase-app.js";
+        import { getFirestore, collection, addDoc, serverTimestamp } from "https://www.gstatic.com/firebasejs/12.9.0/firebase-firestore.js";
+
+        // ==========================
+        // FIREBASE
+        // ==========================
+
+        const firebaseConfig = {
+            apiKey: "AIzaSyCFDSbgdBjsg39ENGxmNbvsAFb_l1Ud4k",
+            authDomain: "propuesta-noviazo.firebaseapp.com",
+            projectId: "propuesta-noviazo",
+            storageBucket: "propuesta-noviazo.firebasestorage.app",
+            messagingSenderId: "311038871515",
+            appId: "1:311038871515:web:987e0ea4308c9c4bb989fe",
+            measurementId: "G-9PNQ2LGNPK"
+        };
+
+        const app = initializeApp(firebaseConfig);
+        const db = getFirestore(app);
+
+        // ==========================
+        // GUARDAR RESULTADO FINAL
+        // ==========================
+
+        try {
+            await addDoc(collection(db, "respuestas"), {
+                respuesta: "SI_FINAL",
+                pagina: "si.html",
+                fecha: serverTimestamp(),
+                navegador: navigator.userAgent,
+                pantalla: `${window.innerWidth}x${window.innerHeight}`
+            });
+        } catch (err) {
+            console.error("❌ Error guardando SI FINAL:", err);
+        }
+
+        // ==========================
+        // CORAZONES 🎉
+        // ==========================
+
         function crearCorazon() {
-            const corazon = document.createElement('div');
-            corazon.classList.add('corazon');
-            const emojis = ['❤️', '💕', '💖', '💗', '💓', '💝', '♥️','🫶🏿'];
+            const corazon = document.createElement("div");
+            corazon.classList.add("corazon");
+
+            const emojis = ["❤️", "💕", "💖", "💗", "💓", "💝", "♥️", "🫶🏿"];
             corazon.innerHTML = emojis[Math.floor(Math.random() * emojis.length)];
-            corazon.style.left = Math.random() * 100 + '%';
-            corazon.style.animationDuration = (Math.random() * 2 + 3) + 's';
+
+            corazon.style.left = Math.random() * 100 + "%";
+            corazon.style.animationDuration = Math.random() * 2 + 3 + "s";
+
             document.body.appendChild(corazon);
 
-            setTimeout(() => {
-                corazon.remove();
-            }, 5000);
+            setTimeout(() => corazon.remove(), 5000);
         }
 
         setInterval(crearCorazon, 200);
+
     </script>
+
 </body>
+
 </html>

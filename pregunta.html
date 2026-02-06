@@ -1,13 +1,10 @@
-
-<!-- ============================================ -->
-<!-- ARCHIVO 2: pregunta.html (LA PREGUNTA) -->
-<!-- ============================================ -->
 <!DOCTYPE html>
 <html lang="es">
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>Una pregunta importante...</title>
+
     <style>
         * {
             margin: 0;
@@ -22,7 +19,6 @@
             justify-content: center;
             align-items: center;
             background: linear-gradient(135deg, #ffecd2 0%, #fcb69f 100%);
-            overflow: hidden;
         }
 
         .container {
@@ -33,20 +29,7 @@
         h1 {
             font-size: 48px;
             color: #e74c3c;
-            margin-bottom: 40px;
-            text-shadow: 2px 2px 4px rgba(0,0,0,0.1);
-            animation: aparecer 1s ease-out;
-        }
-
-        @keyframes aparecer {
-            from {
-                opacity: 0;
-                transform: scale(0.5);
-            }
-            to {
-                opacity: 1;
-                transform: scale(1);
-            }
+            margin-bottom: 30px;
         }
 
         .botones {
@@ -62,56 +45,86 @@
             border: none;
             border-radius: 50px;
             cursor: pointer;
-            transition: all 0.3s;
             font-weight: bold;
         }
 
         .btn-si {
             background: #2ecc71;
             color: white;
-            box-shadow: 0 5px 15px rgba(46, 204, 113, 0.4);
-        }
-
-        .btn-si:hover {
-            background: #27ae60;
-            transform: translateY(-2px);
-            box-shadow: 0 7px 20px rgba(46, 204, 113, 0.6);
         }
 
         .btn-no {
             background: #95a5a6;
             color: white;
-            box-shadow: 0 5px 15px rgba(149, 165, 166, 0.4);
-        }
-
-        .btn-no:hover {
-            background: #7f8c8d;
         }
     </style>
 </head>
+
 <body>
     <div class="container">
         <h1>¿Quieres ser mi novia? 💕</h1>
         <h1>Ingi 🫣</h1>
+
         <div class="botones">
             <button class="btn btn-si" id="btnSi">Sí ❤️</button>
             <button class="btn btn-no" id="btnNo">No 😔</button>
         </div>
     </div>
 
-    <script>
-        const btnSi = document.getElementById('btnSi');
-        const btnNo = document.getElementById('btnNo');
+    <!-- 🔥 FIREBASE + LÓGICA -->
+    <script type="module">
+        import { initializeApp } from "https://www.gstatic.com/firebasejs/12.9.0/firebase-app.js";
+        import { getFirestore, collection, addDoc, serverTimestamp } from "https://www.gstatic.com/firebasejs/12.9.0/firebase-firestore.js";
 
-        btnSi.addEventListener('click', function() {
-            window.location.href = 'si.html';
+        // 🔧 CONFIGURACIÓN FIREBASE
+        const firebaseConfig = {
+            apiKey: "AIzaSyCFDSbgdBjsg39ENGxmNbvsAFb_l1Ud4k",
+            authDomain: "propuesta-noviazo.firebaseapp.com",
+            projectId: "propuesta-noviazo",
+            storageBucket: "propuesta-noviazo.firebasestorage.app",
+            messagingSenderId: "311038871515",
+            appId: "1:311038871515:web:987e0ea4308c9c4bb989fe"
+        };
+
+        // 🚀 INICIAR FIREBASE
+        const app = initializeApp(firebaseConfig);
+        const db = getFirestore(app);
+
+        console.log("🔥 Firebase conectado");
+
+        // 💾 FUNCIÓN GUARDAR RESPUESTA
+        async function guardarRespuesta(respuesta) {
+            try {
+                await addDoc(collection(db, "respuestas"), {
+                    respuesta: respuesta,
+                    fecha: serverTimestamp(),
+                    pagina: "pregunta.html"
+                });
+
+                console.log("✅ Guardado:", respuesta);
+
+                // 👉 Redirección
+                if (respuesta === "SI") {
+                    window.location.href = "si.html";
+                } else {
+                    window.location.href = "no.html";
+                }
+
+            } catch (error) {
+                console.error("❌ Error:", error);
+                alert("No se pudo guardar la respuesta 😢");
+            }
+        }
+
+        // 🎯 EVENTOS
+        document.getElementById("btnSi").addEventListener("click", () => {
+            guardarRespuesta("SI");
         });
 
-        btnNo.addEventListener('click', function() {
-            window.location.href = 'no.html';
+        document.getElementById("btnNo").addEventListener("click", () => {
+            guardarRespuesta("NO");
         });
     </script>
+
 </body>
 </html>
-
-
