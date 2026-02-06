@@ -18,39 +18,36 @@
             display: flex;
             justify-content: center;
             align-items: center;
-            background: linear-gradient(135deg, #ffecd2 0%, #fcb69f 100%);
+            background: linear-gradient(135deg, #ffecd2, #fcb69f);
+            padding: 20px;
         }
 
         .container {
             text-align: center;
-            padding: 20px;
+            max-width: 420px;
+            width: 100%;
         }
 
         h1 {
-            font-size: 48px;
+            font-size: clamp(28px, 6vw, 42px);
             color: #e74c3c;
-            margin-bottom: 25px;
+            margin-bottom: 15px;
         }
 
         .botones {
             display: flex;
-            gap: 30px;
-            justify-content: center;
-            margin-top: 30px;
+            flex-direction: column;
+            gap: 15px;
+            margin-top: 25px;
         }
 
         .btn {
-            padding: 20px 60px;
-            font-size: 24px;
+            padding: 16px;
+            font-size: clamp(18px, 4vw, 22px);
             border: none;
-            border-radius: 50px;
+            border-radius: 40px;
             cursor: pointer;
             font-weight: bold;
-            transition: transform 0.2s;
-        }
-
-        .btn:hover {
-            transform: scale(1.05);
         }
 
         .btn-si {
@@ -64,8 +61,8 @@
         }
 
         .mensaje {
-            margin-top: 20px;
-            font-size: 18px;
+            margin-top: 15px;
+            font-size: 16px;
             color: #555;
             display: none;
         }
@@ -73,7 +70,6 @@
 </head>
 
 <body>
-
     <div class="container">
         <h1>¿Quieres ser mi novia? 💕</h1>
         <h1>Ingi 🫣</h1>
@@ -93,20 +89,15 @@
         const btnNo = document.getElementById("btnNo");
         const mensaje = document.getElementById("mensaje");
 
-        btnSi.addEventListener("click", () => {
+        btnSi.onclick = () => {
             mensaje.style.display = "block";
-            setTimeout(() => {
-                window.location.href = "si.html";
-            }, 800);
-        });
+            setTimeout(() => location.href = "si.html", 800);
+        };
 
-        btnNo.addEventListener("click", () => {
+        btnNo.onclick = () => {
             mensaje.style.display = "block";
-            setTimeout(() => {
-                window.location.href = "no.html";
-            }, 800);
-        });
+            setTimeout(() => location.href = "no.html", 800);
+        };
     </script>
-
 </body>
 </html>

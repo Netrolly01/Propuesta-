@@ -1,138 +1,100 @@
 <!DOCTYPE html>
 <html lang="es">
 <head>
-    <meta charset="UTF-8">
-    <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>¡SÍ! 💕</title>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>¡SÍ! 💕</title>
 
-    <style>
-        * {
-            margin: 0;
-            padding: 0;
-            box-sizing: border-box;
-        }
+<style>
+* {
+    margin: 0;
+    padding: 0;
+    box-sizing: border-box;
+}
 
-        body {
-            font-family: 'Georgia', serif;
-            min-height: 100vh;
-            display: flex;
-            justify-content: center;
-            align-items: center;
-            background: linear-gradient(135deg, #ff9a9e 0%, #fecfef 50%, #ffecd2 100%);
-            overflow: hidden;
-            text-align: center;
-        }
+body {
+    font-family: 'Georgia', serif;
+    min-height: 100vh;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    background: linear-gradient(135deg, #ff9a9e, #fecfef, #ffecd2);
+    overflow: hidden;
+    padding: 20px;
+}
 
-        .container {
-            z-index: 10;
-        }
+.container {
+    text-align: center;
+    max-width: 500px;
+}
 
-        h1 {
-            font-size: 56px;
-            color: #e74c3c;
-            margin-bottom: 20px;
-            animation: pulso 1.2s infinite;
-        }
+h1 {
+    font-size: clamp(32px, 7vw, 52px);
+    color: #e74c3c;
+    animation: pulso 1.2s infinite;
+}
 
-        @keyframes pulso {
-            0%, 100% { transform: scale(1); }
-            50% { transform: scale(1.1); }
-        }
+@keyframes pulso {
+    0%,100% { transform: scale(1); }
+    50% { transform: scale(1.1); }
+}
 
-        p {
-            font-size: 26px;
-            color: #e74c3c;
-            margin-top: 10px;
-        }
+p {
+    font-size: clamp(18px, 4.5vw, 26px);
+    color: #e74c3c;
+    margin-top: 10px;
+}
 
-        .emojis {
-            font-size: 70px;
-            margin-top: 20px;
-        }
+.emojis {
+    font-size: clamp(40px, 10vw, 70px);
+    margin-top: 20px;
+}
 
-        .corazon {
-            position: fixed;
-            font-size: 30px;
-            animation: caer linear;
-            pointer-events: none;
-        }
+.corazon {
+    position: fixed;
+    font-size: 26px;
+    animation: caer linear;
+    pointer-events: none;
+}
 
-        @keyframes caer {
-            0% { top: -10%; opacity: 1; }
-            100% { top: 110%; opacity: 0; }
-        }
-
-        /* Mensaje solo si el navegador bloquea el audio */
-        .tap-msg {
-            position: fixed;
-            bottom: 20px;
-            width: 100%;
-            text-align: center;
-            font-size: 16px;
-            color: #c0392b;
-            display: none;
-        }
-    </style>
+@keyframes caer {
+    0% { top: -10%; opacity: 1; }
+    100% { top: 110%; opacity: 0; }
+}
+</style>
 </head>
 
 <body>
 
-    <div class="container">
-        <h1>¡VAMOOOSSS! 🎉❤️</h1>
-        <p>¡Me haces el hombre más feliz del mundo!</p>
-        <p>¡Te amo, Ingi! 💖</p>
-        <p>Hoy es el mejor día de mi vida 🤌🏿</p>
-        <div class="emojis">😍💖✨</div>
-    </div>
+<div class="container">
+    <h1>¡VAMOOOSSS! 🎉❤️</h1>
+    <p>¡Me haces el hombre más feliz del mundo!</p>
+    <p>¡Te amo, Ingi! 💖</p>
+    <p>Hoy es el mejor día de mi vida 🤌🏿</p>
+    <div class="emojis">😍💖✨</div>
+</div>
 
-    <div class="tap-msg" id="tapMsg">
-         💕
-    </div>
+<!-- 🎶 Música automática -->
+<iframe
+    width="0"
+    height="0"
+    src="https://www.youtube.com/embed/-JE_lXvnN-8?autoplay=1&loop=1&playlist=-JE_lXvnN-8"
+    allow="autoplay">
+</iframe>
 
-    <!-- 🎶 Música (intento automático) -->
-    <iframe
-        id="musica"
-        width="0"
-        height="0"
-        src="https://www.youtube.com/embed/-JE_lXvnN-8?autoplay=1&loop=1&playlist=-JE_lXvnN-8"
-        frameborder="0"
-        allow="autoplay">
-    </iframe>
+<script>
+function crearCorazon() {
+    const c = document.createElement("div");
+    c.className = "corazon";
+    c.innerHTML = ["❤️","💕","💖","💗","💓","💝","🫶🏿"][Math.floor(Math.random()*7)];
+    c.style.left = Math.random()*100+"%";
+    c.style.animationDuration = (Math.random()*2+3)+"s";
+    document.body.appendChild(c);
+    setTimeout(()=>c.remove(),5000);
+}
 
-    <script>
-        const musica = document.getElementById("musica");
-        const tapMsg = document.getElementById("tapMsg");
-
-        // Si el navegador bloquea el audio, mostramos aviso
-        setTimeout(() => {
-            tapMsg.style.display = "block";
-        }, 2000);
-
-        // Cualquier toque activa el audio
-        document.body.addEventListener("click", () => {
-            if (!musica.src.includes("autoplay=1")) {
-                musica.src = "https://www.youtube.com/embed/-JE_lXvnN-8?autoplay=1&loop=1&playlist=-JE_lXvnN-8";
-            }
-            tapMsg.style.display = "none";
-        }, { once: true });
-
-        // Corazones
-        function crearCorazon() {
-            const corazon = document.createElement("div");
-            corazon.className = "corazon";
-
-            const emojis = ["❤️","💕","💖","💗","💓","💝","♥️","🫶🏿"];
-            corazon.innerHTML = emojis[Math.floor(Math.random() * emojis.length)];
-
-            corazon.style.left = Math.random() * 100 + "%";
-            corazon.style.animationDuration = (Math.random() * 2 + 3) + "s";
-
-            document.body.appendChild(corazon);
-            setTimeout(() => corazon.remove(), 5000);
-        }
-
-        setInterval(crearCorazon, 250);
-    </script>
+setInterval(crearCorazon, 250);
+</script>
 
 </body>
 </html>
