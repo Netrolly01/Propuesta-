@@ -2,7 +2,6 @@
 <html lang="es">
 <head>
     <meta charset="UTF-8">
-    <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>Una pregunta importante...</title>
 
     <style>
@@ -36,7 +35,6 @@
             display: flex;
             gap: 30px;
             justify-content: center;
-            margin-top: 30px;
         }
 
         .btn {
@@ -57,6 +55,12 @@
             background: #95a5a6;
             color: white;
         }
+
+        #estado {
+            margin-top: 25px;
+            font-size: 20px;
+            color: #2c3e50;
+        }
     </style>
 </head>
 
@@ -69,14 +73,14 @@
             <button class="btn btn-si" id="btnSi">Sí ❤️</button>
             <button class="btn btn-no" id="btnNo">No 😔</button>
         </div>
+
+        <p id="estado"></p>
     </div>
 
-    <!-- 🔥 FIREBASE + LÓGICA -->
     <script type="module">
         import { initializeApp } from "https://www.gstatic.com/firebasejs/12.9.0/firebase-app.js";
         import { getFirestore, collection, addDoc, serverTimestamp } from "https://www.gstatic.com/firebasejs/12.9.0/firebase-firestore.js";
 
-        // 🔧 CONFIGURACIÓN FIREBASE
         const firebaseConfig = {
             apiKey: "AIzaSyCFDSbgdBjsg39ENGxmNbvsAFb_l1Ud4k",
             authDomain: "propuesta-noviazo.firebaseapp.com",
@@ -86,45 +90,36 @@
             appId: "1:311038871515:web:987e0ea4308c9c4bb989fe"
         };
 
-        // 🚀 INICIAR FIREBASE
         const app = initializeApp(firebaseConfig);
         const db = getFirestore(app);
 
-        console.log("🔥 Firebase conectado");
+        console.log("🔥 Firebase y Firestore listos");
 
-        // 💾 FUNCIÓN GUARDAR RESPUESTA
         async function guardarRespuesta(respuesta) {
+            document.getElementById("estado").innerText = "Guardando respuesta… 💌";
+
             try {
                 await addDoc(collection(db, "respuestas"), {
-                    respuesta: respuesta,
-                    fecha: serverTimestamp(),
-                    pagina: "pregunta.html"
+                    respuesta,
+                    fecha: serverTimestamp()
                 });
 
-                console.log("✅ Guardado:", respuesta);
+                document.getElementById("estado").innerText =
+                    "Respuesta guardada 💖";
 
-                // 👉 Redirección
-                if (respuesta === "SI") {
-                    window.location.href = "si.html";
-                } else {
-                    window.location.href = "no.html";
-                }
+                setTimeout(() => {
+                    window.location.href =
+                        respuesta === "SI" ? "si.html" : "no.html";
+                }, 800);
 
             } catch (error) {
-                console.error("❌ Error:", error);
-                alert("No se pudo guardar la respuesta 😢");
+                console.error(error);
+                alert("❌ No se pudo guardar");
             }
         }
 
-        // 🎯 EVENTOS
-        document.getElementById("btnSi").addEventListener("click", () => {
-            guardarRespuesta("SI");
-        });
-
-        document.getElementById("btnNo").addEventListener("click", () => {
-            guardarRespuesta("NO");
-        });
+        btnSi.onclick = () => guardarRespuesta("SI");
+        btnNo.onclick = () => guardarRespuesta("NO");
     </script>
-
 </body>
 </html>
